@@ -22,11 +22,53 @@
   //console.log(database);
   //ref() 尋找
   //set()
-  firebase.database().ref().set('hi');
+  //firebase.database().ref().set('hi');
   
+  // var data= null;
+  // data={
+  //   student1:{
+  //     name: 'tom',
+  //     num: '1'
+
+  //   },
+  //   student2:{
+  //     name: 'sim',
+  //     num: '2'
+
+  //   }
+  // }
+  // var data= null;
+  // data={
+  //   food:{
+  //     coke:{
+
+  //     },
+  //     fries:{
+
+  //     }
+  //   }
+
+  // }
+  // firebase.database().ref().set(data);
+  // firebase.database().ref('student1/name').set('rick');
+  var myName= firebase.database().ref('student1');
+  //once 讀取一次
+  myName.once('value',function(snapshot){
+    console.log(snapshot.val());
+     
+     var dataSetObj = snapshot.val(), text= "";
+    //     for(x in dataSetObj){
+    //         text += JSON.stringify(dataSetObj[x]);
+    //        text+= "--";  //separator
+    //     }
+    //     var result = text.split("--");
+    //     result.pop();
+    //     console.log(result);
+      document.getElementById('title').textContent=dataSetObj['name'];
+  });
 </script>
 <body>
-    
+    <div id="title"></div>
 </body>
 
 
