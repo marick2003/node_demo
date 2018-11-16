@@ -6,69 +6,74 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBTLe_wrvBO8b_RlQhLqqto6dvykDQDfGE",
-    authDomain: "testbot-993f2.firebaseapp.com",
-    databaseURL: "https://testbot-993f2.firebaseio.com",
-    projectId: "testbot-993f2",
-    storageBucket: "testbot-993f2.appspot.com",
-    messagingSenderId: "837912342372"
-  };
-  firebase.initializeApp(config);
-  //var database=firebase.database();
-  //console.log(database);
-  //ref() 尋找
-  //set()
-  //firebase.database().ref().set('hi');
-  
-  // var data= null;
-  // data={
-  //   student1:{
-  //     name: 'tom',
-  //     num: '1'
 
-  //   },
-  //   student2:{
-  //     name: 'sim',
-  //     num: '2'
 
-  //   }
-  // }
-  // var data= null;
-  // data={
-  //   food:{
-  //     coke:{
-
-  //     },
-  //     fries:{
-
-  //     }
-  //   }
-
-  // }
-  // firebase.database().ref().set(data);
-  // firebase.database().ref('student1/name').set('rick');
-  var myName= firebase.database().ref('student1');
-  //once 讀取一次
-  myName.once('value',function(snapshot){
-    console.log(snapshot.val());
-     
-     var dataSetObj = snapshot.val(), text= "";
-    //     for(x in dataSetObj){
-    //         text += JSON.stringify(dataSetObj[x]);
-    //        text+= "--";  //separator
-    //     }
-    //     var result = text.split("--");
-    //     result.pop();
-    //     console.log(result);
-      document.getElementById('title').textContent=dataSetObj['name'];
-  });
-</script>
 <body>
     <div id="title"></div>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyBTLe_wrvBO8b_RlQhLqqto6dvykDQDfGE",
+          authDomain: "testbot-993f2.firebaseapp.com",
+          databaseURL: "https://testbot-993f2.firebaseio.com",
+          projectId: "testbot-993f2",
+          storageBucket: "testbot-993f2.appspot.com",
+          messagingSenderId: "837912342372"
+        };
+        firebase.initializeApp(config);
+        //var database=firebase.database();
+        //console.log(database);
+        //ref() 尋找
+        //set()
+        //firebase.database().ref().set('hi');
+        
+        // var data= null;
+        // data={
+        //   student1:{
+        //     name: 'tom',
+        //     num: '1'
+      
+        //   },
+        //   student2:{
+        //     name: 'sim',
+        //     num: '2'
+      
+        //   }
+        // }
+        // var data= null;
+        // data={
+        //   food:{
+        //     coke:{
+      
+        //     },
+        //     fries:{
+      
+        //     }
+        //   }
+      
+        // }
+        // firebase.database().ref().set(data);
+        // firebase.database().ref('student1/name').set('rick');
+        var myName= firebase.database().ref('student3');
+        //once 讀取一次
+        
+        // myName.once('value',function(snapshot){
+        //   console.log(snapshot.val());
+           
+        //    var dataSetObj = snapshot.val(), text= "";
+        //     document.getElementById('title').textContent=dataSetObj;
+        // });
+        myName.set('rick3');
+        myName.on('value',function(snapshot){
+          
+            var dataSetObj = snapshot.val();
+            console.log(dataSetObj);
+            document.getElementById('title').textContent=snapshot.val();
+            
+        });
+      </script>
+
 </body>
 
 

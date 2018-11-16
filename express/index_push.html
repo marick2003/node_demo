@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+</head>
+<body>
+    <h1 id="title"></h1>
+    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            // 請貼上你的 config 設定
+         apiKey: "AIzaSyBTLe_wrvBO8b_RlQhLqqto6dvykDQDfGE",
+          authDomain: "testbot-993f2.firebaseapp.com",
+          databaseURL: "https://testbot-993f2.firebaseio.com",
+          projectId: "testbot-993f2",
+          storageBucket: "testbot-993f2.appspot.com",
+          messagingSenderId: "837912342372"
+        };
+        firebase.initializeApp(config);
+        // push
+        // todolist
+        // key
+        var todos = firebase.database().ref('todos');
+        todos.push({content:'要記得洗澡'});
+        
+        // var data ={
+        //     todos:{
+        //         "-Ky3tN-e26xOToBSb8Mg":{
+        //             content:'今天要記得刷牙'
+        //         },
+        //         "-Ky3tN-e26xOToBSb8Mg":{
+        //             content:'今天要記得刷牙'
+        //         }
+        //     }
+        // }
+    </script>
+</body>
+</html>
