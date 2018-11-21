@@ -9,7 +9,11 @@
 
 
 <body>
-    <div id="title"></div>
+        <input id="txt" type="text" placeholder="請輸入內容">
+        <button id="btn">add</button>
+        <ul id="list"></ul>
+        <h1 id="title"></h1>
+        <div id="content"></div>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script>
         // Initialize Firebase
@@ -22,6 +26,38 @@
           messagingSenderId: "837912342372"
         };
         firebase.initializeApp(config);
+         // 排序
+     // 排序
+    // 由輕到重
+    
+    var people = {
+        "bob": {
+          "height" : 178,
+          "old": 18,
+          "weight": 70
+        },
+        "casper": {
+          "height" : 180,
+          "old" : 13,
+          "weight" : 80
+        },
+        "mike":{
+          "height" : 162,
+          "old": 15,
+          "weight": 55
+        }
+      };
+      ///排序
+      firebase.database().ref('people').set(people);
+      var peopleRef=firebase.database().ref('people');
+      peopleRef.orderByChild("old").once('value',function(snapshot){
+
+          //console.log(snapshot.val());
+
+         snapshot.forEach(function(item){
+            console.log(item.val());
+         })
+      })
         //var database=firebase.database();
         //console.log(database);
         //ref() 尋找
@@ -64,14 +100,75 @@
         //    var dataSetObj = snapshot.val(), text= "";
         //     document.getElementById('title').textContent=dataSetObj;
         // });
-        myName.set('rick3');
-        myName.on('value',function(snapshot){
+
+        //on 持續監聽
+        // myName.set('rick3');
+        // myName.on('value',function(snapshot){
           
-            var dataSetObj = snapshot.val();
-            console.log(dataSetObj);
-            document.getElementById('title').textContent=snapshot.val();
+        //     var dataSetObj = snapshot.val();
+        //     console.log(dataSetObj);
+        //     document.getElementById('title').textContent=snapshot.val();
             
+        // });
+
+         //todos example
+        var ref=firebase.database().ref();
+        ref.on('value',function(snapshot){
+            var path=document.getElementById('content');
+            path.textContent=JSON.stringify(snapshot.val(),null,3);
+
+
         });
+        var txt=document.getElementById("txt");
+        var send=document.getElementById("btn");
+        var list=document.getElementById("list");
+        var todos=firebase.database().ref('todos');
+        
+        //once 讀取一次
+        todos.once('value',function(snapshot){
+                     var str='';
+                    var data=snapshot.val();
+                    for (var item in data) {
+                        
+                        console.log(item);
+                        str+='<li data-key="'+ item +'">'+data[item].content+'</li>';
+                    }
+                    console.log(str);
+                    list.innerHTML=str;
+
+        })
+
+
+
+        //案送出按鈕
+        send.addEventListener("click",function(e){
+                console.log(txt.value);
+                todos.push({content:txt.value});
+                //顯示內容，on 持續更新
+                todos.on('value',function(snapshot){
+
+                    
+                    var str='';
+                    var data=snapshot.val();
+                    for (var item in data) {
+                        
+                        console.log(item);
+                        str+='<li data-key="'+ item +'">'+data[item].content+'</li>';
+                    }
+                    console.log(str);
+                    list.innerHTML=str;
+                })
+            
+        })
+        //刪除
+        list.addEventListener('click',function(e){
+            if(e.target.nodeName="LI"){
+
+                 var key =e.target.dataset.key;
+                 todos.child(key).remove();
+            }
+        })
+
       </script>
 
 </body>

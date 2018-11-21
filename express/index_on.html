@@ -9,6 +9,7 @@
 </head>
 <body>
     <h1 id="title"></h1>
+    <div id="content"></div>
     <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
     <script>
         // Initialize Firebase
@@ -22,12 +23,13 @@
           messagingSenderId: "837912342372"
         };
         firebase.initializeApp(config);
-        // push
-        // todolist
-        // key
-        
-        var todos = firebase.database().ref().child('todos');
-        todos.child('-LRQMCK_oAbAxvnEZEH3').remove();
+        var ref=firebase.database().ref();
+        ref.on('value',function(snapshot){
+            var path=document.getElementById('content');
+            path.textContent=JSON.stringify(snapshot.val(),null,3);
+
+
+        });
         
     </script>
 </body>
