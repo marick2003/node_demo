@@ -9,6 +9,14 @@
 
 
 <body>
+        <input id="txt" type="text" placeholder="請輸入內容">
+        <button id="btn">add</button>
+        <ul id="list"></ul>
+        <h1 id="title"></h1>
+        <div id="content"></div>
+
+        <H1>Pepple 排序</H1>
+        <ul id="list2"></ul>
     <div id="title"></div>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script>
@@ -26,33 +34,57 @@
         // 排序
         // 由輕到重
     
-    var people = {
-        "bob": {
-          "height" : 178,
-          "old": 18,
-          "weight": 70
+  // 由輕到重
+  var people = {
+        "mike": {
+          "height" : 4,
+          "length" : 12.5,
+          "weight": 5000
         },
         "casper": {
-          "height" : 180,
-          "old" : 13,
-          "weight" : 80
+          "height" : 3,
+          "length" : 9,
+          "weight" : 2500
         },
-        "mike":{
-          "height" : 162,
-          "old": 15,
-          "weight": 55
+        "bob": {
+          "height": "dalse",
+          "length" : false,
+          "weight" : 2500
+        },
+        "john": {
+          "height" : true,
+          "length" : 9,
+          "weight" : 2500
+        }
+        ,
+        "josh": {
+          "height" : false,
+          "length" : 9,
+          "weight" : 2500
+        },
+        'boss':{
+          "length": 3
+        },
+        'frank':{
+          height:{'aaa':1}
         }
       };
+      var list2=document.getElementById("list2");
       ///排序
       firebase.database().ref('people').set(people);
       var peopleRef=firebase.database().ref('people');
-      peopleRef.orderByChild("old").once('value',function(snapshot){
+      peopleRef.orderByChild("weight").equalTo(2500).once('value',function(snapshot){
 
           //console.log(snapshot.val());
-
-         snapshot.forEach(function(item){ 
-            console.log(item.val());
-         })
+          var str='';
+         var data=snapshot.val();
+  
+         for (var item in data) {         
+            console.log(item);
+            var s=JSON.stringify(data[item]);
+            str+='<li data-key="'+ item +'">'+s+'</li>';
+         }
+         list2.innerHTML=str;
       })
         //var database=firebase.database();
         //console.log(database);
@@ -101,7 +133,7 @@
           
             var dataSetObj = snapshot.val();
             console.log(dataSetObj);
-            document.getElementById('title').textContent=snapshot.val();
+            //document.getElementById('title').textContent=snapshot.val();
             
         });
         var txt=document.getElementById("txt");
