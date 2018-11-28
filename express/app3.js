@@ -1,5 +1,8 @@
 var express = require('express');
 var app = express();
+//增加靜態檔案的路徑
+app.use(express.static('public'))
+
 var login=function(req,res,next){
     var _url=req.url;
     console.log(_url);
@@ -13,7 +16,7 @@ var login=function(req,res,next){
 
 ///要放第一個排序
 app.get('/',login,function(req,res){
-    res.send('<html><head></head><body><h1>1234index</h1></body></html>')
+    res.send('<html><head></head><body><h1>1234index</h1><img  src="/images/logo.png"</body></html>')
 })
 app.use(function(req,res,next){
     console.log('有人進來了');
