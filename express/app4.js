@@ -11,7 +11,9 @@ app.use(express.static('public'))
 
 app.get('/',function(req,res){
     // res.send('<html><head></head><body><h1>1234index</h1></body></html>')
-    res.render('index');
+    res.render('index',{'title':'六角學院',
+    'show':true,
+    'boss':'liao'});
 })
 app.get('/user',function(req,res){
     // res.send('<html><head></head><body><h1>1234index</h1></body></html>')
