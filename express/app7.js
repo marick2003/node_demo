@@ -29,6 +29,11 @@ app.post('/searchList',function(req,res){
     res.redirect('search');
    // res.render('search');
 })
+app.post('/searchAJAX',function(req,res){
+   console.log(req.body);
+   res.send('hello!');
+
+})
 
 var port=process.env.PORT || 3000;
 app.listen(port);
