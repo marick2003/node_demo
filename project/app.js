@@ -5,19 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-
-var admin = require("firebase-admin");
-var serviceAccount = require("../testbot-993f2-firebase-adminsdk-62bb3-4c118cec4e.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://testbot-993f2.firebaseio.com"
-});
-
-var fireData= admin.database();
 //console.log(fireData);
 
 var app = express();
@@ -39,7 +32,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+
+
+var fireData=require('./public/js/firebaseadmin');
+app.use('/', indexRouter,function(req, res, next){
+  
+  
+  
+});
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
@@ -57,5 +57,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+//新增邏輯
+app.post('/addTodo',function(req,res){
+  //var content=
+
+})
 
 module.exports = app;
