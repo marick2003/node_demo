@@ -8,10 +8,23 @@ var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+var admin = require("firebase-admin");
+var serviceAccount = require("../testbot-993f2-firebase-adminsdk-62bb3-4c118cec4e.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://testbot-993f2.firebaseio.com"
+});
+
+var fireData= admin.database();
+//console.log(fireData);
+
 var app = express();
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+
 
 // parse application/json
 app.use(bodyParser.json())
