@@ -61,7 +61,17 @@ app.use(function(err, req, res, next) {
 
 //新增邏輯
 app.post('/addTodo',function(req,res){
-  //var content=
+
+  console.log("ass");
+  var content=req.body.content;
+  var contentRef=fireData.ref('todos').push();
+  contentRef.set({"content":content}).then(function(){
+    fireData.ref("todos").once('value',function(snapshot){
+
+      res.send(snapshot.val());
+    })
+    
+  })
 
 })
 
