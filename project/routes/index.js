@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var fireData=require('../public/js/firebaseadmin');
+// var fireData=require('../public/js/firebaseadmin');
 
 
   //then 回傳
@@ -14,15 +14,15 @@ var fireData=require('../public/js/firebaseadmin');
 // })
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  //res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express' });
 
-  fireData.ref('todos').once('value',function(snapshot){
-    console.log(snapshot.val());
-    var data=snapshot.val();
-    var title=data.title;
-    res.render('index',{"title":title});
+  // fireData.ref('todos').once('value',function(snapshot){
+  //   console.log(snapshot.val());
+  //   var data=snapshot.val();
+  //   var title=data.title;
+  //   res.render('index',{"title":title});
     
-    });
+  //   });
 });
 
 module.exports = router;
