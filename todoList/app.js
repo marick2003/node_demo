@@ -32,6 +32,11 @@ app.get('/',function(req,res){
         var data = snapshot.val();
         res.render('index',{"todolist":data})
     })
+
+    console.log(req.cookies);
+    res.cookie('name','mary',{
+      maxAge:10000
+    })
 })
 
 

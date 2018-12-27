@@ -9,6 +9,7 @@ send.addEventListener('click',function(e){
     xhr.setRequestHeader('Content-type',"application/json")
     var todo = JSON.stringify({"content":str});
     xhr.send(todo);
+    console.log(xhr);
     xhr.onload = function(){
         var originData = JSON.parse(xhr.responseText);
         if(originData.success == false){
