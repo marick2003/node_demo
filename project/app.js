@@ -12,15 +12,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 //console.log(fireData);
-
+var fireData=require('./public/js/firebaseadmin');
 var app = express();
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-
-// parse application/json
-app.use(bodyParser.json())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,23 +24,24 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 //增加靜態檔案的路徑
 app.use(express.static('public'));
-var admin = require("firebase-admin");
 
-var serviceAccount = require("./testbot-993f2-firebase-adminsdk-62bb3-4c118cec4e.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://testbot-993f2.firebaseio.com"
-});
-
-var fireData = admin.database();
 
 app.use('/', indexRouter,function(req, res, next){
-  
-  
+ 
+  fireData.ref('todos').once('value',function(snapshot){
+    console.log(snapshot.val());
+    var data=snapshot.val();
+    // var title=data.title;
+    // console.log(title);
+    // console.log(title);
+
+    ///render 不能執行用兩次以上
+    res.render('index',{"todolist":data})
+    
+    }); 
   
 });
 app.use('/users', usersRouter);
@@ -68,23 +63,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-// 新增邏輯
 
-app.post('/addTodo',function(req,res){
-  var content = req.body.content;
-  var contentRef = fireData.ref('todos').push();
-  contentRef.set({"content":content})
-  .then(function(){
-      fireData.ref('todos').once('value',function(snapshot){
-          res.send(
-              {
-                  "success": true,
-                  "result": snapshot.val(),
-                  "message": "資料讀取成功"
-              }
-          );
-      })
-  })
-})
+
 
 module.exports = app;
