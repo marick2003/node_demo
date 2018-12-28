@@ -13,6 +13,9 @@ var usersRouter = require('./routes/users');
 
 //console.log(fireData);
 var fireData=require('./public/js/firebaseadmin');
+
+
+var session = require('express-session');
 var app = express();
 
 
