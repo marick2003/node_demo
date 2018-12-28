@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-
+var parseurl = require('parseurl');
 
 
 var indexRouter = require('./routes/index');
@@ -14,10 +14,7 @@ var usersRouter = require('./routes/users');
 //console.log(fireData);
 var fireData=require('./public/js/firebaseadmin');
 
-
-var session = require('express-session');
 var app = express();
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,19 +29,46 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 
+var session = require('express-session');
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie:{maxAge: 100*1000}
+}))
+// app.use(function (req, res, next) {
+//   if (!req.session.views) {
+//     req.session.views = {}
+//   }
+//   if (!req.session.username) {
+//     req.session.username = {}
+//   }
+//   if (!req.session.email) {
+//     req.session.email = {}
+//   }  
+//   // get the url pathname
+//   var pathname = parseurl(req).pathname
+
+//   // count the views
+//   req.session.views[pathname] = (req.session.views[pathname] || 0) + 1
+
+//   next()
+// })
+
+
 app.use('/', indexRouter,function(req, res, next){
  
-  fireData.ref('todos').once('value',function(snapshot){
-    console.log(snapshot.val());
-    var data=snapshot.val();
+  //fireData.ref('todos').once('value',function(snapshot){
+   // console.log(snapshot.val());
+    //var data=snapshot.val();
     // var title=data.title;
     // console.log(title);
     // console.log(title);
 
     ///render 不能執行用兩次以上
-    res.render('index',{"todolist":data})
+    //res.render('index',{"todolist":data})
     
-    }); 
+   // }); 
   
 });
 app.use('/users', usersRouter);

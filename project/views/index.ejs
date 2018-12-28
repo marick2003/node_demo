@@ -8,6 +8,12 @@
 </head>
 <body>
     <h1> 代辦事項列表 </h1>
+    <h2><%=username %> <%=email %></h2>
+    <form action="/" method="post">
+        <input type="text" name="username" value="">
+        <input type="text" name="email" value="">
+        <input type="submit" value="送出">
+    </form>
     <input type="text" id="content" name="content">
     <input type="submit" id="send" value="儲存">
     <ul id="list">

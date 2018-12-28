@@ -13,21 +13,49 @@ var fireData=require('../public/js/firebaseadmin');
 //   })
 // })
 /* GET home page. */
+
+
+
 router.get('/', function(req, res, next) {
   //res.render('index', { title: 'Express' });
+    
+    // req.session.username="tom";
+    // req.session.email="email";
+    console.log(req.session);
+    //console.log('you viewed this page ' + req.session.views['/'] + ' times');
+    res.cookie('name','mary',{
+        maxAge:1000000,
+        httpOnly:true
 
+    })
   fireData.ref('todos').once('value',function(snapshot){
-    console.log(snapshot.val());
+    //console.log(snapshot.val());
     var data=snapshot.val();
     // var title=data.title;
     // console.log(title);
     // console.log(title);
 
     ///render 不能執行用兩次以上
-    res.render('index',{"todolist":data})
+    res.render('index',{
+    "todolist":data,
+    username: req.session.username,
+    email: req.session.email
+
+    })
     
     }); 
 });
+///
+
+router.post('/',function(req,res){
+
+    req.session.username=req.body.username;
+    req.session.email=req.body.email;
+    console.log(req.session);
+    res.redirect('/');
+
+})
+
 
 // 新增邏輯
 router.post('/addTodo',function(req,res){
