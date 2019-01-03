@@ -30,7 +30,8 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+var flash = require('connect-flash');
+app.use(flash());
 app.use('/', routes);
 app.use('/login', login);
 app.use('/signup', signup);
