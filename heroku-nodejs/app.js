@@ -5,6 +5,16 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
 
+
+/////session
+var session=require("express-session");
+app.use(session({
+secret:'mysupersecret',
+resave:true,
+saveUninitialized:true
+
+}))
+
 // routes
 var routes = require('./routes/index');
 var login = require('./routes/login');
