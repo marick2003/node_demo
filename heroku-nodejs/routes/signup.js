@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
 
     }).catch(function(error){
         var errorCode= error.code;
-       var errormessage=error.message;
+       // var errormessage=error.message;
     //    auth/email-already-in-use
     //    Thrown if there already exists an account with the given email address.
     //    auth/invalid-email
@@ -54,7 +54,7 @@ router.post('/', function (req, res) {
 
 
        //req.flash('error',errormessage);
-       res.redirect('/signup');
+        res.redirect('/signup');
         console.log(error);
     
     });
