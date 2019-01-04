@@ -4,21 +4,33 @@
   <title>
     <%= title %>
 	</title>
+	
+	<!-- <auth>
+		<%= auth %>
+	</auth> -->
+	<% if(!auth) { %>
+		<p>尚未登入</p>
+	<% } %>
 	<link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
 	<h1>留言板</h1>
+
+	<% if(auth) { %>
 	<form action="/messageBoard" method="post">
 		<input type="text" name="content" placeholder="填寫留言訊息">
 		<input type="submit" valut="送出">
 	</form>
+	<% } %>
 	<a href="/login">登入</a>
 	<a href="/signup">註冊</a>
 		<a href="/user">個人頁面</a>
 	<ul>
+			<% for(item in list){ %>
 			<li>
-				姓名 : 留言內容
+				<%= list[item].nickname %> : <%= list[item].content %>
 			</li>
+			<% }%>
 	 </ul>
 </body>
 </html>

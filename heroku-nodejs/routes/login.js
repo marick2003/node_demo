@@ -11,9 +11,12 @@ router.post('/', function (req, res) {
     fireAuth.signInWithEmailAndPassword(req.body.email,req.body.passwd)
     .then(function(user){
         console.log(user.user);
+        req.session.uid = user.user.uid;
+        res.redirect('/');
         console.log("login success");
 
     }).catch(function(error){
+        res.redirect('/');
         console.log("login error");
     });
 })

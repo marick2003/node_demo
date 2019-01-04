@@ -4,16 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
-
-
-/////session
-var session=require("express-session");
-app.use(session({
-secret:'mysupersecret',
-resave:true,
-saveUninitialized:true
-
-}))
+////
+var validator= require('express-validator');
 
 // routes
 var routes = require('./routes/index');
@@ -24,6 +16,19 @@ var user = require('./routes/user');
 
 var app = express();
 
+/////check puls
+app.use(validator());
+
+
+/////session
+var session=require("express-session");
+app.use(express.static("public"));
+app.use(session({
+secret:'mysupersecret',
+resave:true,
+saveUninitialized:true
+
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -45,9 +50,22 @@ app.use(flash());
 app.use('/', routes);
 app.use('/login', login);
 app.use('/signup', signup);
-app.use('/user', user);
+
 app.use('/messageBoard', messageBoard);
 
+///check login
+app.use(function(req,res,next){
+
+  if(req.session.uid){
+
+    return next();
+
+  }
+    res.redirect('/');
+})
+
+
+app.use('/user', user);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
