@@ -9,14 +9,15 @@ router.get('/', function (req, res, next) {
 
 
   ///認證
-  console.log(firebase.auth());
+  //console.log(firebase.auth());
 
   ///test firebase
     firebaseDb.ref("list").once('value',function(snapshot){
    // console.log(snapshot.val());
         var auth=req.session.uid;
         res.render('index', {
-            title: '六角學院留言板',
+            title: '留言板demos',
+            title: '留言板demos',
             auth: auth,
             list:snapshot.val()
         });
