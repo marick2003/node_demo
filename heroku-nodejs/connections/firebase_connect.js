@@ -1,3 +1,4 @@
+  //check auth file
   var firebase=require('firebase');
   // Initialize Firebase
   var config = {

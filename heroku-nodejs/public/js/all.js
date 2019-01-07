@@ -1,0 +1,2 @@
+///promise fun
+var runpromise
