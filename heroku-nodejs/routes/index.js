@@ -16,8 +16,7 @@ router.get('/', function (req, res, next) {
    // console.log(snapshot.val());
         var auth=req.session.uid;
         res.render('index', {
-            title: '留言板demos',
-            title: '留言板demos',
+            title: '留言板demo',
             auth: auth,
             list:snapshot.val()
         });
