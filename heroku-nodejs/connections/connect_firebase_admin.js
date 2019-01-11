@@ -1,3 +1,4 @@
+//database file
 var admin = require("firebase-admin");
 var serviceAccount = require("../testbot-993f2-firebase-adminsdk-62bb3-4c118cec4e.json");
 
