@@ -41,4 +41,11 @@ router.post('/categories/create',function(req,res){
 
 
 });
+
+router.post('/categories/delete/:id',function(req,res){
+
+    const id= req.param('id');
+    console.log(id);
+    res.redirect('/dashboard/categories');
+});
 module.exports = router;
