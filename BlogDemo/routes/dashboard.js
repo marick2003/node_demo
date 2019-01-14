@@ -29,15 +29,30 @@ const articlesRef=firebaseAdminDb.ref('/articles');
     console.log(data);
     articleRef.set(data).then(function(snapshot){
 
-      res.redirect('/dashboard/article/${key}');
+      res.redirect(`/dashboard/article/${data.id}`);
     });
     
 
   });
+  router.post('/article/update/:id',function(req,res){
+   
+    const data=req.body;
+    const id=req.param('id');
 
+    const updateTime=Math.floor(Date.now()/1000);
+    data.id=id;
+    data.update_time=updateTime;
+    console.log(data);
+    ////更新資料
+    articlesRef.child(data.id).update(data).then(function(snapshot){
+
+      res.redirect(`/dashboard/article/${data.id}`);
+    });
+    
+
+  });
 router.get('/article/:id', function(req, res, next) {
     const id=req.param('id');
-    console.log(id);
     let categories= {}
     categoriesRef.once('value').then(function(snapshot){
       categories=snapshot.val();
