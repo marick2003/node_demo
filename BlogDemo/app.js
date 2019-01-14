@@ -7,7 +7,22 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var dashboard = require('./routes/dashboard');
 
+var session=require("express-session");
+var flash =require("connect-flash");
+
 var app = express();
+/////
+app.use(session({
+  
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie:{
+    maxAge:100*1000
+  }
+
+}));
+app.use(flash());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
