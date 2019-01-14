@@ -76,7 +76,27 @@ router.get('/article/:id', function(req, res, next) {
 
 
   router.get('/archives', function(req, res, next) {
-    res.render('dashboard/archives', { title: 'Express' });
+    
+    let categories={};
+    categoriesRef.once('value').then(function(snapshot){
+
+      categories= snapshot.val();
+      return articlesRef.orderByChild('update_time').once('value');
+    }).then(function(snapshot){
+     const  articles= [];
+     snapshot.forEach(function(snapshotChild){
+
+        console.log('child'.snapshotChild.val());
+        articles.push(snapshotChild.val());
+     });
+     console.log(articles);
+      res.render('dashboard/archives', {
+         title: 'Express',
+         categories,
+         articles,
+         categories
+        });
+    });
   });
   
   router.get('/categories', function(req, res, next) {
