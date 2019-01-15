@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+////標籤與日期轉換 套件
+const stringtags=require('striptags');
+const momont= require('moment');
+
+
 var firebaseAdminDb=require('../connections/firebase_admin');
 
 const categoriesRef=firebaseAdminDb.ref('/categories');
@@ -34,20 +39,20 @@ const articlesRef=firebaseAdminDb.ref('/articles');
     
 
   });
-  router.post('/article/update/:id',function(req,res){
+  router.post('/article/delete/:id',function(req,res){
    
-    const data=req.body;
     const id=req.param('id');
-
-    const updateTime=Math.floor(Date.now()/1000);
-    data.id=id;
-    data.update_time=updateTime;
-    console.log(data);
     ////更新資料
-    articlesRef.child(data.id).update(data).then(function(snapshot){
+    articlesRef.child(id).remove().then(function(snapshot){
 
-      res.redirect(`/dashboard/article/${data.id}`);
+      req.flash('info','文章已刪除');
+      res.send('文章已刪除');
+      res.end();
+
     });
+      //res.redirect(`/dashboard/article`);
+    
+
     
 
   });
@@ -76,25 +81,32 @@ router.get('/article/:id', function(req, res, next) {
 
 
   router.get('/archives', function(req, res, next) {
-    
+    const status= req.query.status || 'public';
+    console.log(status);
     let categories={};
     categoriesRef.once('value').then(function(snapshot){
 
       categories= snapshot.val();
+     // console.log(categories);
       return articlesRef.orderByChild('update_time').once('value');
     }).then(function(snapshot){
      const  articles= [];
      snapshot.forEach(function(snapshotChild){
 
-        console.log('child'.snapshotChild.val());
-        articles.push(snapshotChild.val());
+        //console.log('child'+snapshotChild.val());
+        if(status===snapshotChild.val().status ){
+          articles.push(snapshotChild.val());
+        }
+        
      });
-     console.log(articles);
+    // console.log(articles);
       res.render('dashboard/archives', {
          title: 'Express',
          categories,
          articles,
-         categories
+         stringtags,
+         momont,
+         status
         });
     });
   });
