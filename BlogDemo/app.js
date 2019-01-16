@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var dashboard = require('./routes/dashboard');
+///登入 註冊
+var auth= require('./routes/auth');
 
 var session=require("express-session");
 var flash =require("connect-flash");
