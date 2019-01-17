@@ -4,11 +4,31 @@ var router = express.Router();
 const stringtags=require('striptags');
 const momont= require('moment');
 
-
 var firebaseAdminDb=require('../connections/firebase_admin');
 
 const categoriesRef=firebaseAdminDb.ref('/categories');
 const articlesRef=firebaseAdminDb.ref('/articles');
+
+  router.get('/',function(req,res,next){
+    var auth=req.session.uid;
+    console.log("session-uid"+auth);
+    if(auth){
+
+      res.render('dashboard/index', { 
+        title: 'Express'
+       });
+
+    }else{
+
+      res.redirect('/auth/signin');
+      
+    }
+
+    
+    
+  });
+
+ 
    router.get('/article/create', function(req, res, next) {
 
       categoriesRef.once('value').then(function(snapshot){
@@ -113,7 +133,7 @@ router.get('/article/:id', function(req, res, next) {
   
   router.get('/categories', function(req, res, next) {
     categoriesRef.once('value').then(function(snapshot){
-     const messages=req.flash('info');
+      const messages=req.flash('info');
 
       const categories=snapshot.val();
       console.log(categories);

@@ -6,9 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var dashboard = require('./routes/dashboard');
-///登入 註冊
-var auth= require('./routes/auth');
 
+///登入 註冊
+var auth = require('./routes/auth');
 var session=require("express-session");
 var flash =require("connect-flash");
 
@@ -21,6 +21,7 @@ app.use(session({
   saveUninitialized: true,
   cookie:{
     maxAge:100*1000
+    
   }
 
 }));
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/dashboard', dashboard);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
