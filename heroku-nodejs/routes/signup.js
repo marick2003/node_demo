@@ -14,7 +14,7 @@ router.post('/', function (req, res) {
    var nickname=req.body.nickname;
     fireAuth.createUserWithEmailAndPassword(email,password)
     .then(function(user){
-       console.log(user.user.uid);
+       console.log(user.user.ueid);
         var saveUser={
             'email': email,
             'nickname': nickname,

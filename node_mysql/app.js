@@ -5,31 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var dashboard = require('./routes/dashboard');
-
-///登入 註冊
-var auth = require('./routes/auth');
-var session=require("express-session");
-var flash =require("connect-flash");
+var usersRouter = require('./routes/users');
 
 var app = express();
-/////
-app.use(session({
-  
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true,
-  cookie:{
-    maxAge:100*1000
-    
-  }
-
-}));
-app.use(flash());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('ejs',require('express-ejs-extend'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
@@ -39,17 +20,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/dashboard', dashboard);
-app.use('/auth', auth);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
- // next(createError(404));
- var err=new Error('Not Founf');
- err.status=404;
- res.render('error',{
-  message:'您查看頁面不存在'
- });
+  next(createError(404));
 });
 
 // error handler

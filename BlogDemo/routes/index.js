@@ -69,6 +69,12 @@ router.get('/post/:id', function(req, res, next) {
       
    //});
   // console.log(articles);
+    if(!articles){
+
+      return  res.render('error',{
+        message:'您查看頁面不存在'
+       });
+    }
     res.render('post', {
        title: 'Express',
        categories,
