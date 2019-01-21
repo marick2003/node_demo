@@ -1,5 +1,83 @@
 
 <% extend('../layouts/dashboard-layout') %>
  <div class="main container-fluid my-4">
-   
+        <h1>個人檔案</h1>
+
+        <form ref='uploadForm' method='post' action='/auth/upload' enctype="multipart/form-data">
+        <input  type='file' name='fileUploaded' id="imgInp"  accept="image/*">
+        <!-- 
+        <h4>Or drop image here:</h4>
+            <div id="dragArea">
+            
+            </div>
+        -->
+            <h4>Preview image here:</h4>
+            <div id="previewDiv"></div>
+            <input type='submit'>
+        </form>
  </div>
+ <script>
+        // function readURL(input) {
+
+        // if (input.files && input.files[0]) {
+        //     var reader = new FileReader();
+
+        //     reader.onload = function(e) {
+        //     $('#blah').attr('src', e.target.result);
+        //     }
+
+        //     reader.readAsDataURL(input.files[0]);
+        // }
+        // }
+
+ // 預覽圖片，將取得的files一個個取出丟到convertFile()
+function previewFiles(files) {
+    if (files && files.length >= 1) {
+        $.map(files, file => {
+            convertFile(file)
+                .then(data => {
+                  console.log(data) // 把編碼後的字串輸出到console
+                  showPreviewImage(data, file.name)
+                })
+                .catch(err => console.log(err))
+        })
+    }
+}
+// 使用FileReader讀取檔案，並且回傳Base64編碼後的source
+function convertFile(file) {
+    return new Promise((resolve,reject)=>{
+        // 建立FileReader物件
+        let reader = new FileReader()
+        // 註冊onload事件，取得result則resolve (會是一個Base64字串)
+        reader.onload = () => { resolve(reader.result) }
+        // 註冊onerror事件，若發生error則reject
+        reader.onerror = () => { reject(reader.error) }
+        // 讀取檔案
+        reader.readAsDataURL(file)
+    })
+}
+
+// 在頁面上新增<img>
+function showPreviewImage(src, fileName) {
+    let image = new Image(250) // 設定寬250px
+    image.name = fileName
+    image.src = src // <img>中src屬性除了接url外也可以直接接Base64字串
+    $("#previewDiv").append(image).append(`<p>File: ${image.name}`)
+}
+    $("#imgInp").change(function() {
+           $("#previewDiv").empty() // 清空當下預覽
+           previewFiles(this.files) // this即為<input>元素
+    });
+ </script>
+ <style>
+  
+    #dragArea {
+        width:200px;
+        border-style:dashed;
+        border-width:0.2em;
+        height:200px;
+    }
+    h4 {
+        margin:20px auto 10px;
+    }
+</style>

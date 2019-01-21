@@ -12,7 +12,15 @@ var auth = require('./routes/auth');
 var session=require("express-session");
 var flash =require("connect-flash");
 
+
+///上傳檔案
+const fileUpload = require('express-fileupload');
+
 var app = express();
+
+// default options
+app.use(fileUpload());
+
 /////
 app.use(session({
   

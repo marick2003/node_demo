@@ -4,10 +4,15 @@ var firebase=require('../connections/firebase_connect');
 var fireAuth=firebase.auth();
 var firebaseDb=require('../connections/firebase_admin');
 
+
+//var storage = firebase.storage("gs://demotest-4eea8.appspot.com");
+
+
 //console.log('fireAuth'+fireAuth);
 
 router.get('/',function(req,res,next){
     var auth=req.session.uid;
+    auth=true;
     console.log("session-uid"+auth);
     if(auth){
       res.render('auth/index', { 
@@ -23,6 +28,30 @@ router.get('/',function(req,res,next){
 
   });
 
+  ////首頁編輯
+router.post('/upload',function(req,res){
+
+    var auth=req.session.uid;
+    // Points to the root reference
+    //var storageRef = firebase.storage().ref();
+    var sampleFile = req.files.fileUploaded;
+
+    //console.log('FIRST TEST: ' + file.fileUploaded);
+    console.log('second TEST: ' +sampleFile.name);
+
+  //存在伺服器
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv('./img/test.jpg', function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send('File uploaded!');
+  });
+
+
+
+});
+
 router.get('/signin', function(req, res) {
     var auth=req.session.uid;
     res.render('auth/signin', {
@@ -37,7 +66,7 @@ router.post('/signin',function(req,res){
     .then(function(user){
         console.log(user.user);
         req.session.uid = user.user.uid;
-         res.redirect('/dashboard/archives');
+         res.redirect('/auth');
         console.log("login success");
 
     }).catch(function(error){
@@ -58,6 +87,7 @@ router.get('/signup', function(req, res) {
 ///註冊判斷
 router.post('/signup', function(req, res) {
     var auth=req.session.uid;
+   // checkauth(auth,res);
     var email= req.body.email;
     var password=req.body.password;
 
@@ -121,7 +151,7 @@ router.post('/signup', function(req, res) {
     });
     //Send a password reset email
     router.post('/forget',function(req, res){
-
+        
         var emailAddress = req.body.email;
         fireAuth.sendPasswordResetEmail(emailAddress).then(function(user) {
             // Email sent.
@@ -133,5 +163,17 @@ router.post('/signup', function(req, res) {
         });
 
     });
+let checkauth=function(e,res){
 
+       // return new Promise(function(resolve,reject){
+            if(!e){
+                res.redirect('/auth/signin');
+
+            }else{
+
+                res.redirect('/auth/');
+            }
+       // })
+    
+}
 module.exports = router;

@@ -102,7 +102,9 @@ router.get('/article/:id', function(req, res, next) {
 
   router.get('/archives', function(req, res, next) {
     const status= req.query.status || 'public';
+    
     console.log(status);
+    var auth=req.session.uid;
     let categories={};
     categoriesRef.once('value').then(function(snapshot){
 
@@ -126,7 +128,8 @@ router.get('/article/:id', function(req, res, next) {
          articles,
          stringtags,
          momont,
-         status
+         status,
+         auth
         });
     });
   });
