@@ -12,13 +12,26 @@ var firebaseDb=require('../connections/firebase_admin');
 
 router.get('/',function(req,res,next){
     var auth=req.session.uid;
-    auth=true;
+    //auth=true;
     console.log("session-uid"+auth);
+
+
+
+
     if(auth){
-      res.render('auth/index', { 
-        title: 'Express',
-        auth
-       });
+
+        const userRef=firebaseDb.ref('/user/auth');
+        userRef.once('value').then(function(snapshot){
+
+            const userdata= snapshot.val();
+            
+            res.render('auth/index', { 
+                title: 'Express',
+                auth,
+                userdata
+            });
+
+        });
 
     }else{
 
@@ -35,18 +48,30 @@ router.post('/upload',function(req,res){
     // Points to the root reference
     //var storageRef = firebase.storage().ref();
     var sampleFile = req.files.fileUploaded;
+    var user_name=req.body.name;
+    var saveUser={
+        'name': user_name
+    }
+    firebaseDb.ref('/user/'+auth).update(saveUser);
 
+    
     //console.log('FIRST TEST: ' + file.fileUploaded);
     console.log('second TEST: ' +sampleFile.name);
 
-  //存在伺服器
-  // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('user_data/test.jpg', function(err) {
-    if (err)
-      return res.status(500).send(err);
+    //存在伺服器
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv('user_data/'+auth+'.jpg', function(err) {
+        if (err)
+        return res.status(500).send(err);
+        // res.send('File uploaded!');
+        // res.end();
+       
+    }).then(function(){
+        res.redirect('/auth');
+    });
 
-    res.send('File uploaded!');
-  });
+    
+
 
 
 
@@ -66,7 +91,7 @@ router.post('/signin',function(req,res){
     .then(function(user){
         console.log(user.user);
         req.session.uid = user.user.uid;
-         res.redirect('/auth');
+        res.redirect('/auth');
         console.log("login success");
 
     }).catch(function(error){
@@ -90,13 +115,15 @@ router.post('/signup', function(req, res) {
    // checkauth(auth,res);
     var email= req.body.email;
     var password=req.body.password;
+    var name=req.body.name;
 
     fireAuth.createUserWithEmailAndPassword(email,password)
     .then(function(user){
        console.log(user.user.uid);
         var saveUser={
             'email': email,
-            'uid':user.user.uid
+            'uid':user.user.uid,
+            'name': name
         }
         firebaseDb.ref('/user/'+user.user.uid).set(saveUser);
         req.session.uid = user.user.uid;
@@ -171,7 +198,7 @@ let checkauth=function(e,res){
 
             }else{
 
-                res.redirect('/auth/');
+                res.redirect('/auth');
             }
        // })
     
