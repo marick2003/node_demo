@@ -41,7 +41,7 @@ router.post('/upload',function(req,res){
 
   //存在伺服器
   // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv('./img/test.jpg', function(err) {
+  sampleFile.mv('user_data/test.jpg', function(err) {
     if (err)
       return res.status(500).send(err);
 
