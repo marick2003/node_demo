@@ -4,7 +4,7 @@ var firebase=require('../connections/firebase_connect');
 var fireAuth=firebase.auth();
 var firebaseDb=require('../connections/firebase_admin');
 
-
+const articlesRef=firebaseDb.ref('/articles');
 //var storage = firebase.storage("gs://demotest-4eea8.appspot.com");
 
 
@@ -13,23 +13,48 @@ var firebaseDb=require('../connections/firebase_admin');
 router.get('/',function(req,res,next){
     var auth=req.session.uid;
     //auth=true;
-    console.log("session-uid"+auth);
-
-
+    console.log("session-uid "+auth);
+    const userRef=firebaseDb.ref('/user/'+auth);
+    const articles=[];
 
 
     if(auth){
 
-        const userRef=firebaseDb.ref('/user/auth');
+      
         userRef.once('value').then(function(snapshot){
-
-            const userdata= snapshot.val();
             
-            res.render('auth/index', { 
-                title: 'Express',
-                auth,
-                userdata
+            const userdata= snapshot.val();
+            console.log("userdata "+userdata);
+
+            articlesRef.once('value').then(function(snapshot){
+
+                snapshot.forEach(function(snapshotChild){
+
+                    console.log('child'+snapshotChild.val().author);
+                    if(auth === snapshotChild.val().author)
+                    {
+                        articles.push(snapshotChild.val());
+
+                    }
+
+                 });
+
+                 console.log("articles"+articles.length);
+                 
+                 res.render('auth/index', { 
+                     title: 'Express',
+                     auth,
+                     userdata,
+                     articles: articles
+                 });
+
+
+
+
+
             });
+            
+      
 
         });
 
@@ -60,15 +85,13 @@ router.post('/upload',function(req,res){
 
     //存在伺服器
     // Use the mv() method to place the file somewhere on your server
-    sampleFile.mv('user_data/'+auth+'.jpg', function(err) {
+    sampleFile.mv('public/user_data/'+auth+'.jpg', function(err) {
         if (err)
         return res.status(500).send(err);
         // res.send('File uploaded!');
         // res.end();
-       
-    }).then(function(){
         res.redirect('/auth');
-    });
+    })
 
     
 

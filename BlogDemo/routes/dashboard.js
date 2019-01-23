@@ -9,14 +9,32 @@ var firebaseAdminDb=require('../connections/firebase_admin');
 const categoriesRef=firebaseAdminDb.ref('/categories');
 const articlesRef=firebaseAdminDb.ref('/articles');
 
+
+
+let checkauth=function(e,res){
+
+  // return new Promise(function(resolve,reject){
+       if(!e){
+           res.redirect('/auth/signin');
+
+       }else{
+
+           return;
+       }
+  // })
+
+}
+
   router.get('/',function(req,res,next){
     var auth=req.session.uid;
     console.log("session-uid"+auth);
     if(auth){
 
-      res.render('dashboard/index', { 
-        title: 'Express'
-       });
+      // res.render('dashboard/archives', { 
+      //   title: 'Express',
+      //   auth
+      //  });
+       res.redirect('/dashboard/archives');
 
     }else{
 
@@ -78,6 +96,7 @@ const articlesRef=firebaseAdminDb.ref('/articles');
   });
 router.get('/article/:id', function(req, res, next) {
     const id=req.param('id');
+    var auth=req.session.uid;
     let categories= {}
     categoriesRef.once('value').then(function(snapshot){
       categories=snapshot.val();
@@ -89,7 +108,8 @@ router.get('/article/:id', function(req, res, next) {
         res.render('dashboard/article', {
           title: 'Express',
           categories,
-          article
+          article,
+          auth
       });
 
     });
@@ -135,21 +155,30 @@ router.get('/article/:id', function(req, res, next) {
   });
   
   router.get('/categories', function(req, res, next) {
-    categoriesRef.once('value').then(function(snapshot){
-      const messages=req.flash('info');
 
-      const categories=snapshot.val();
-      console.log(categories);
-      res.render('dashboard/categories', { 
-        title: 'Express',
-        messages: messages,
-        hasInfo: messages.length>0,
-        categories
-       });
-    });
+    var auth=req.session.uid;
+    console.log("session-uid"+auth);
+    if(auth){
+      categoriesRef.once('value').then(function(snapshot){
+        const messages=req.flash('info');
+  
+        const categories=snapshot.val();
+        console.log(categories);
+        res.render('dashboard/categories', { 
+          title: 'Express',
+          messages: messages,
+          hasInfo: messages.length>0,
+          categories
+         });
+      });
+    }else{
 
 
-    
+      res.redirect('/dashboard/');
+
+
+    }
+
   });
   
 router.post('/categories/create',function(req,res){

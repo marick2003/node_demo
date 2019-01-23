@@ -26,9 +26,9 @@ app.use(session({
   
   secret: 'keyboard cat',
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: true,  
   cookie:{
-    maxAge:100*1000
+    maxAge:600*1000  //10分鐘到期
     
   }
 

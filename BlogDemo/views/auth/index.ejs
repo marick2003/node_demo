@@ -13,14 +13,20 @@
         -->
             <h4>Preview image here:</h4>
             <div id="previewDiv">
-                <!-- <img width='250' src="user_data/<%- userdata[0].uid %>.jpg"> -->
+                <img width='250' src="/user_data/<%- userdata.uid %>.jpg"> 
             </div>
             <h4>姓名:</h4>
-               <!-- <input type="text" class="form-control" id="name" name="name"  aria-describedby="nameHelp" placeholder="請輸入 姓名"
-              required value="<%- userdata %>">-->
+               <input type="text" class="form-control" id="name" name="name"  aria-describedby="nameHelp" placeholder="請輸入 姓名"
+              required value="<%- userdata.name %>">
             <h4>文章:</h4>
             <div id="user_article">
-                
+                <% for (var prop in articles) { %>
+
+                    <a href="dashboard/article/<%- articles[prop].id %>">
+                        <%- articles[prop].title %>
+                    </a><br>
+
+                <% } %>
             </div>
             <input type='submit'>
         </form>
