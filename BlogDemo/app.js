@@ -58,6 +58,9 @@ app.use(function(req, res, next) {
  res.render('error',{
   message:'您查看頁面不存在'
  });
+ 
+
+
 });
 
 // error handler

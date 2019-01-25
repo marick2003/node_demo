@@ -30,10 +30,6 @@ let checkauth=function(e,res){
     console.log("session-uid"+auth);
     if(auth){
 
-      // res.render('dashboard/archives', { 
-      //   title: 'Express',
-      //   auth
-      //  });
        res.redirect('/dashboard/archives');
 
     }else{
