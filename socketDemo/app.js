@@ -7,7 +7,27 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+
 var app = express();
+
+// var http = require('http').Server(app);
+
+// var server = app.listen(3000);
+
+// const server = require('http').Server(app);
+
+// const io = require('socket.io')(server);
+
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+//   io.emit("message", 'Hello wWrld!');
+  
+//   socket.on("disconnect", () => {
+//     console.log("a user go out");
+//   });
+
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
