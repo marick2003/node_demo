@@ -2,10 +2,10 @@
 socket = io.connect('ws://localhost:3000');
 
 socket.on('history', (obj) => {
-    //if (obj.length() > 0) {
-       // console.log("length "+obj.length);
+    if (obj.length > 0) {
+       
         appendData(obj);
-    //}
+    }
 });
 
 socket.on('message', (obj) => {

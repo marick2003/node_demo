@@ -2,23 +2,22 @@ const firebaseAdminDb=require('../connections/firebase_admin');
 const messageRef=firebaseAdminDb.ref('/msg');
 const Messages = require('../models/Messages');
 const moment = require('moment');
-let db={};
+
 class SocketHander {
 
     constructor() {
-        //this.db=db;
+        this.db;
     }
 
     connect() {
 
-    
-       
         //this.db.Promise = global.Promise;
+        this.db="connect";
     }
 
     getMessages() {
        
-        
+        return  this.db;
     }
 
     storeMessages(data) {
