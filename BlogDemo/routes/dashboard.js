@@ -126,6 +126,7 @@ router.get('/article/:id', function(req, res, next) {
     console.log(status);
     var auth=req.session.uid;
     let categories={};
+    if(auth){
     categoriesRef.once('value').then(function(snapshot){
 
       categories= snapshot.val();
@@ -152,6 +153,12 @@ router.get('/article/:id', function(req, res, next) {
          auth
         });
     });
+
+   }else{
+
+    res.redirect('/auth/signin');
+
+   }
   });
   
   router.get('/categories', function(req, res, next) {
